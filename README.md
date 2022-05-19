@@ -1,16 +1,68 @@
-#  UNOFFICIAL REST API FOR Valorant News
-An Unofficial REST API for [Valorant](https://playvalorant.com/), Created by [Andre Saddler](https://github.com/axsddlr)
+<div id="top"></div>
 
+<br />
+<div align="center">
+<img src="https://static.wikia.nocookie.net/valorant/images/e/e6/Site-logo.png/revision/latest/scale-to-width-down/85?cb=20210620062038"/>
+
+An Unofficial REST API for <a href="https://playvalorant.com/">Valorant</a>
+
+
+Built by <a href="https://github.com/axsddlr">Andre Saddler</a>
+</br>
+  <a href="https://heroku.com/deploy">
+    <img src="https://www.herokucdn.com/deploy/button.png">
+  </a>
+
+</div>
 
 ### Features
 This REST API provides you with some useful tools such as:
 - Patch Notes
 - Latest News
 
-&nbsp;
-&nbsp;
+## Current Endpoints
 
-![alt text](https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Valorant_logo_-_pink_color_version.svg/2560px-Valorant_logo_-_pink_color_version.svg.png)
+### `/valorant/<locale>/patch-notes`
+
+- Method: `GET`
+- Cached Time: 300 seconds (5 Minutes)
+- locale: 
+<details>
+  <summary>Click to expand!</summary>
+
+      ar_AE
+      de_DE 
+      en_US 
+      es_ES 
+      es_MX 
+      fr_FR 
+      id_ID 
+      it_IT 
+      ja_JP 
+      ko_KR 
+      pl_PL 
+      pt_BR 
+      ru_RU 
+      th_TH 
+      tr_TR 
+      vi_VN 
+      zh_TW     
+</details>
 
 
-<p><a href="https://heroku.com/deploy" rel="nofollow"><img src="https://camo.githubusercontent.com/c0824806f5221ebb7d25e559568582dd39dd1170/68747470733a2f2f7777772e6865726f6b7563646e2e636f6d2f6465706c6f792f627574746f6e2e706e67" alt="Deploy to Heroku" data-canonical-src="https://www.herokucdn.com/deploy/button.png" style="max-width:100%;"></a></p>
+
+### Usage
+
+```
+python3 main.py
+OR 
+uvicorn main:app --reload --port 3000
+```
+
+## Contributing
+
+Feel free to submit a [pull request](https://github.com/rehkloos/vlrggapi/pull/new/master) or an [issue](https://github.com/rehkloos/vlrggapi/issues/new)!
+
+## License
+
+The MIT License (MIT)
