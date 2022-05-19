@@ -21,3 +21,9 @@ def get_status(url):
         raise Exception("API response: {}".format(re.status_code))
     else:
         return re.status_code
+
+
+region = {
+    "na": 105555635175479654,
+    "gcna": 106976737954740691,
+}
