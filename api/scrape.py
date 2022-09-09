@@ -3,8 +3,8 @@ import httpx
 from utils.utils import headers, get_status
 
 
-def get_esports_news_json():
-    url = "https://cdn.contentstack.io/v3/content_types/articles/entries?environment=production&locale=en-us"
+def get_esports_news_json(locale):
+    url = f"https://cdn.contentstack.io/v3/content_types/articles/entries?environment=production&locale={locale}"
     headers2 = {'access_token': "cs61908494445448f776bbdbc7", 'api_key': "bltb730eada072bdbf4"}
 
     response = httpx.get(url, headers=headers2)
@@ -36,11 +36,11 @@ def get_esports_news_json():
 
 class Valo:
     @staticmethod
-    def get_esports_news():
-        apiResponse = get_esports_news_json()
+    def get_esports_news(locale):
+        apiResponse = get_esports_news_json(locale)
         base = apiResponse["entries"]
 
-        status = get_status("https://playvalorant.com/en-us/news/")
+        status = get_status("https://valorantesports.com/news")
 
         api = []
         for each in base:

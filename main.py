@@ -40,19 +40,34 @@ vlrnt = Valo()
 @app.get("/valorant/{locale}/patch-notes", tags=["News"])
 @limiter.limit("250/minute")
 def valorant_patch_notes(request: Request, locale):
+    """
+    locales:\n
+    en-us\n
+    de-de
+    """
     return vlrnt.get_patch_notes(locale)
 
 
 @app.get("/valorant/news", tags=["News"])
 @limiter.limit("250/minute")
 def valorant_news(request: Request, locale):
+    """
+    locales:\n
+    en-us\n
+    de-de
+    """
     return vlrnt.get_news(locale)
 
 
-@app.get("/valorant/esports/news", tags=["Esports News"])
+@app.get("/valorant/esports/news/{locale}", tags=["Esports News"])
 @limiter.limit("250/minute")
-def valorant_esports_news(request: Request):
-    return vlrnt.get_esports_news()
+def valorant_esports_news(request: Request, locale):
+    """
+    locales:\n
+    en-us\n
+    de-de
+    """
+    return vlrnt.get_esports_news(locale)
 
 
 # @app.get("/valorant/esports/schedule/{region}/{stateof}", tags=["Esports News"])
