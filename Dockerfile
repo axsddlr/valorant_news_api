@@ -1,16 +1,20 @@
-FROM tiangolo/uvicorn-gunicorn-fastapi:python3.7
-LABEL maintainer="Andre Saddler <andrexsaddler@gmail.com>"
+FROM tiangolo/uvicorn-gunicorn:python3.9-alpine3.14 as base
 
-LABEL build_date="2021-07-20"
-RUN pip install virtualenv
+RUN mkdir -p /vlrntapi
 
-WORKDIR /api
-ENV VIRTUAL_ENV=/opt/venv
-RUN python -m venv $VIRTUAL_ENV
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+WORKDIR /vlrntapi
 
+COPY requirements.txt .
+RUN pip install --no-cache-dir  -r requirements.txt
+
+
+FROM tiangolo/uvicorn-gunicorn:python3.9-alpine3.14 as final
+
+WORKDIR /vlrntapi
+COPY --from=base /usr/local/lib/python3.9/site-packages /usr/local/lib/python3.9/site-packages
 COPY . .
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+
+RUN apk add curl
 
 CMD ["python", "main.py"]
+HEALTHCHECK --interval=5s --timeout=3s CMD curl --fail http://127.0.0.1:3001/health || exit 1

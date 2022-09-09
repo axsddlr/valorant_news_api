@@ -57,13 +57,18 @@ def valorant_esports_news(request: Request, ):
 
 @app.get("/valorant/esports/schedule/{region}/{stateof}", tags=["Esports News"])
 @limiter.limit("100/minute")
-def valorant_esports_news(request: Request, region,  stateof):
+def valorant_esports_news(request: Request, region, stateof):
     """
     state:\n
     unstarted\n
     completed\n
     """
     return vlrnt.get_esports_schedule(region, stateof)
+
+
+@app.get('/health')
+def health():
+    return "Healthy: OK"
 
 
 if __name__ == "__main__":
