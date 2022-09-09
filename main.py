@@ -14,7 +14,7 @@ app = FastAPI(
     description="An Unofficial News REST API for [Valorant](https://playvalorant.com/), Made by [Andre "
                 "Saddler]( "
                 "https://github.com/axsddlr)",
-    version="1.0.0",
+    version="1.0.1",
     docs_url="/",
     redoc_url=None,
 )
@@ -49,21 +49,21 @@ def valorant_news(request: Request, locale):
     return vlrnt.get_news(locale)
 
 
-@app.get("/valorant/esports/", tags=["Esports News"])
+@app.get("/valorant/esports/news", tags=["Esports News"])
 @limiter.limit("250/minute")
-def valorant_esports_news(request: Request, ):
-    return vlrnt.get_esports()
+def valorant_esports_news(request: Request):
+    return vlrnt.get_esports_news()
 
 
-@app.get("/valorant/esports/schedule/{region}/{stateof}", tags=["Esports News"])
-@limiter.limit("100/minute")
-def valorant_esports_news(request: Request, region, stateof):
-    """
-    state:\n
-    unstarted\n
-    completed\n
-    """
-    return vlrnt.get_esports_schedule(region, stateof)
+# @app.get("/valorant/esports/schedule/{region}/{stateof}", tags=["Esports News"])
+# @limiter.limit("100/minute")
+# def valorant_esports_news(request: Request, region, stateof):
+#     """
+#     state:\n
+#     unstarted\n
+#     completed\n
+#     """
+#     return vlrnt.get_esports_schedule(region, stateof)
 
 
 @app.get('/health')

@@ -1,58 +1,37 @@
 import httpx
-import os
 
 from utils.utils import headers, get_status
-import utils.utils as res
-
-from dotenv import load_dotenv
-
-load_dotenv()
-"""
-use the inspect/network tab to see the headers
-for schedule x-api-key use the following: https://valorantesports.com/schedule/api/
-and look for "getSchedule?hl"
-for News api key and toke use the following: https://valorantesports.com/news 
-and look for "entries?environment=
-"""
-ENTOKEN = os.getenv("esports_news_token")
-ENKEY = os.getenv("esports_news_key")
-ESKEY = os.getenv("esports_schedule_key")
 
 
 def get_esports_news_json():
-    url = "https://cdn.contentstack.io/v3/content_types/articles/entries"
-    headers2 = {'access_token': f"{ENTOKEN}", 'api_key': f"{ENKEY}"}
+    url = "https://cdn.contentstack.io/v3/content_types/articles/entries?environment=production&locale=en-us"
+    headers2 = {'access_token': "cs61908494445448f776bbdbc7", 'api_key': "bltb730eada072bdbf4"}
 
-    querystring = {f"environment": "production",
-                   "only\\[BASE\\]\\[\\]": ["article_type", "banner_settings.banner", "date", "description",
-                                            "external_link", "video_link", "title", "uid", "url"],
-                   "only\\[banner_settings.banner\\]": "url",
-                   "query": "\\{\"hide_from_newsfeeds\": \\{ \"$ne\": true \\}\\}", "desc": "date", "locale": "en-us"}
-    response = httpx.get(url, headers=headers2, params=querystring)
+    response = httpx.get(url, headers=headers2)
     return response.json()
 
 
-def get_esports_schedule_json(region):
-    url = "https://esports-api.service.valorantesports.com/persisted/val/getSchedule"
-    region = res.region[str(region)]
-
-    # gc_na = 106976737954740691
-    # na = 105555635175479654
-    querystring = {"hl": "en-US", "sport": "val", "leagueId": f"{region}"}
-
-    headers2 = {
-        'authority': "esports-api.service.valorantesports.com",
-        'accept': "*/*",
-        'accept-language': "en-US,en;q=0.9",
-        'cache-control': "no-cache",
-        'origin': "https://valorantesports.com",
-        'pragma': "no-cache",
-        'referer': "https://valorantesports.com/",
-        'sec-ch-ua': "^\^",
-        'x-api-key': f"{ESKEY}"
-    }
-    response = httpx.get(url, headers=headers2, params=querystring)
-    return response
+# def get_esports_schedule_json(region):
+#     url = "https://esports-api.service.valorantesports.com/persisted/val/getSchedule"
+#     region = res.region[str(region)]
+#
+#     # gc_na = 106976737954740691
+#     # na = 105555635175479654
+#     querystring = {"hl": "en-US", "sport": "val", "leagueId": f"{region}"}
+#
+#     headers2 = {
+#         'authority': "esports-api.service.valorantesports.com",
+#         'accept': "*/*",
+#         'accept-language': "en-US,en;q=0.9",
+#         'cache-control': "no-cache",
+#         'origin': "https://valorantesports.com",
+#         'pragma': "no-cache",
+#         'referer': "https://valorantesports.com/",
+#         'sec-ch-ua': "^\^",
+#         'x-api-key': f"{ESKEY}"
+#     }
+#     response = httpx.get(url, headers=headers2, params=querystring)
+#     return response
 
 
 class Valo:
@@ -160,36 +139,36 @@ class Valo:
 
         return data
 
-    @staticmethod
-    def get_esports_schedule(region, stateof):
-        apiResponse = get_esports_schedule_json(region).json()
-        status = get_esports_schedule_json(region).status_code
-        try:
-            base = apiResponse["data"]["schedule"]["events"]
-        except KeyError:
-            base = None
-
-        tournament_info = []
-
-        for each in base:
-            start_time = each["startTime"]
-            state = each["state"]
-            region = each["league"]["region"]
-            stage = each["tournament"]["split"]["name"]
-            teams = each["match"]["teams"]
-
-            if f"{stateof}" in state:
-                tournament_info.append(
-                    {
-                        "title": start_time,
-                        "region": region,
-                        "stage": stage,
-                        "teams": teams,
-                    }
-                )
-            data = {"status": status, "data": tournament_info}
-        return data
+    # @staticmethod
+    # def get_esports_schedule(region, stateof):
+    #     apiResponse = get_esports_schedule_json(region).json()
+    #     status = get_esports_schedule_json(region).status_code
+    #     try:
+    #         base = apiResponse["data"]["schedule"]["events"]
+    #     except KeyError:
+    #         base = None
+    #
+    #     tournament_info = []
+    #
+    #     for each in base:
+    #         start_time = each["startTime"]
+    #         state = each["state"]
+    #         region = each["league"]["region"]
+    #         stage = each["tournament"]["split"]["name"]
+    #         teams = each["match"]["teams"]
+    #
+    #         if f"{stateof}" in state:
+    #             tournament_info.append(
+    #                 {
+    #                     "title": start_time,
+    #                     "region": region,
+    #                     "stage": stage,
+    #                     "teams": teams,
+    #                 }
+    #             )
+    #         data = {"status": status, "data": tournament_info}
+    #     return data
 
 
 if __name__ == '__main__':
-    print(Valo.get_esports_schedule("na", "unstarted"))
+    print(Valo.get_esports_news())
