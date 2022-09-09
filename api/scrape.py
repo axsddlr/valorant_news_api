@@ -89,12 +89,12 @@ class Valo:
 
     @staticmethod
     def get_news(locale):
-        URL = f"https://playvalorant.com/page-data/{locale}/news/announcements/page-data.json"
+        URL = f"https://playvalorant.com/page-data/{locale}/news/page-data.json"
         response = httpx.get(URL, headers=headers)
         responseJSON = response.json()
         status = response.status_code
 
-        base_path = responseJSON["result"]["pageContext"]["data"]["articles"]
+        base_path = responseJSON["result"]["data"]["allContentstackArticles"]["nodes"]
 
         api = []
         for each in base_path:
@@ -108,7 +108,7 @@ class Valo:
             external_link = each["external_link"]
             category = each["category"][0]["title"]
 
-            if "Patch" in title:
+            if "Patch" not in title:
                 api.append(
                     {
                         "title": title,
@@ -126,12 +126,12 @@ class Valo:
 
     @staticmethod
     def get_patch_notes(locale):
-        URL = f"https://playvalorant.com/page-data/{locale}/get_news/game-updates/page-data.json"
+        URL = f"https://playvalorant.com/page-data/{locale}/news/tags/patch-notes/page-data.json"
         response = httpx.get(URL, headers=headers)
         responseJSON = response.json()
         status = response.status_code
 
-        base_path = responseJSON["result"]["pageContext"]["data"]["articles"]
+        base_path = responseJSON["result"]["data"]["articles"]["nodes"]
 
         api = []
         for each in base_path:
@@ -145,17 +145,16 @@ class Valo:
             external_link = each["external_link"]
             category = each["category"][0]["title"]
 
-            if "Patch" in title:
-                api.append(
-                    {
-                        "title": title,
-                        "description": description,
-                        "thumbnail": thumbnail,
-                        "url_path": url_path,
-                        "external_link": external_link,
-                        "category": category,
-                    }
-                )
+            api.append(
+                {
+                    "title": title,
+                    "description": description,
+                    "thumbnail": thumbnail,
+                    "url_path": url_path,
+                    "external_link": external_link,
+                    "category": category,
+                }
+            )
 
         data = {"status": status, "data": api}
 
